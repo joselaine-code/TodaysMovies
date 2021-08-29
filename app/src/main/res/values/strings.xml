@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Today\'s Movies</string>
+    <string name="error_default">Erro desconhecido</string>
+    <string name="text_error_overview">Não foi encontrada a sinopse do filme</string>
+    <string name="text_no_results">Não foi encontrado nenhum resultado</string>
+    <string name="text_error">Ocorreu um erro!</string>
+    <string name="text_button_tentar_novamente">Tentar novamente</string>
+    <string name="details_content_description">Imagem do filme</string>
+    <string name="home_text_button">Buscar</string>
+    <string name="home_title">Qual filme</string>
+    <string name="home_title_2">vamos assistir</string>
+    <string name="home_title_3">HOJE?</string>
+</resources>
