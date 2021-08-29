@@ -13,8 +13,10 @@
         <entry key="..\:/Users/josel/AndroidStudioProjects/TodaysMovies/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Users/josel/AndroidStudioProjects/TodaysMovies/app/src/main/res/layout/fragment_search.xml" value="0.21875" />
         <entry key="..\:/Users/josel/AndroidStudioProjects/TodaysMovies/app/src/main/res/layout/item_filme_home.xml" value="0.22" />
-        <entry key="..\:/Users/josel/AndroidStudioProjects/TodaysMovies/app/src/main/res/layout/item_home.xml" value="0.25" />
-        <entry key="..\:/Users/josel/AndroidStudioProjects/TodaysMovies/app/src/main/res/layout/item_search.xml" value="0.67" />
+        <entry key="..\:/Users/josel/AndroidStudioProjects/TodaysMovies/app/src/main/res/layout/item_home.xml" value="0.12" />
+        <entry key="..\:/Users/josel/AndroidStudioProjects/TodaysMovies/app/src/main/res/layout/item_search.xml" value="0.17" />
+        <entry key="..\:/Users/josel/AndroidStudioProjects/TodaysMovies/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.23489583333333333" />
+        <entry key="..\:/Users/josel/AndroidStudioProjects/TodaysMovies/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.23489583333333333" />
       </map>
     </option>
   </component>
