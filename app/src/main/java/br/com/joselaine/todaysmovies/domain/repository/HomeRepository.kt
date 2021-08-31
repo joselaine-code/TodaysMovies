@@ -5,9 +5,9 @@ import br.com.joselaine.todaysmovies.presentation.base.BaseRepository
 import br.com.joselaine.todaysmovies.utils.ResponseApi
 
 class HomeRepository : BaseRepository() {
-    suspend fun getPopularMovies(): ResponseApi {
+    suspend fun getPopularMovies(page: Int): ResponseApi {
         return safeApiCall {
-            ApiService.tmdbApi.getPopularMovies()
+            ApiService.tmdbApi.getPopularMovies(page)
         }
     }
 }

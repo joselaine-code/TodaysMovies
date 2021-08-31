@@ -23,6 +23,17 @@ class HomeFragment : BaseFragment() {
     private var binding: FragmentHomeBinding? = null
     override var command: MutableLiveData<Command> = MutableLiveData()
     private val viewModel: HomeViewModel by viewModel()
+    private val popularAdapter : PopularAdapter by lazy {
+        PopularAdapter { movie ->
+            val bundle = Bundle()
+            bundle.putInt(KEY_BUNDLE_MOVIE_ID, movie.id)
+            findNavController().navigate(
+                R.id.action_homeFragment_to_detailsFragment,
+                bundle
+            )
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +46,9 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.command = command
-        viewModel.getPopularMovies()
         setupSearch()
         setupObservables()
+        setupRecyclerView()
     }
 
     private fun setupSearch() {
@@ -47,40 +58,9 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setupObservables() {
-        viewModel.onSuccessPopular.observe(viewLifecycleOwner, {
-            it?.let { popularList ->
-                binding.let { bindingNonNull ->
-                    bindingNonNull?.apply {
-                        contentError.isVisible = false
-                        progressBar.isVisible = false
-                        rvPopular.isVisible = true
-                    }
-                }
-                val popularAdapter = PopularAdapter(
-                    popularList = popularList
-                ) { movie ->
-                    val bundle = Bundle()
-                    bundle.putInt(KEY_BUNDLE_MOVIE_ID, movie.id)
-                    findNavController().navigate(
-                        R.id.action_homeFragment_to_detailsFragment,
-                        bundle
-                    )
-                }
-
-                binding?.let { bindingNonNull ->
-                    with(bindingNonNull) {
-                        rvPopular.apply {
-                            layoutManager = LinearLayoutManager(
-                                context, LinearLayoutManager.HORIZONTAL, false
-                            )
-                            adapter = popularAdapter
-                            adapter?.stateRestorationPolicy = RecyclerView
-                                .Adapter.StateRestorationPolicy
-                                .PREVENT_WHEN_EMPTY
-                        }
-                    }
-                }
-            }
+        viewModel.moviesPagedList?.observe(viewLifecycleOwner, { pagedList ->
+            popularAdapter.submitList(pagedList)
+            binding?.progressBar?.isVisible = false
         })
 
         viewModel.command.observe(viewLifecycleOwner, { command ->
@@ -97,11 +77,20 @@ class HomeFragment : BaseFragment() {
                         rvPopular.isVisible = false
                         contentError.isVisible = true
                         btnTryAgain.setOnClickListener {
-                            viewModel.getPopularMovies()
+
                         }
                     }
                 }
             }
         })
+    }
+
+    private fun setupRecyclerView() {
+        binding?.rvPopular?.apply {
+            layoutManager = LinearLayoutManager(
+                context, LinearLayoutManager.HORIZONTAL, false
+            )
+            adapter = popularAdapter
+        }
     }
 }
