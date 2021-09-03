@@ -12,6 +12,7 @@ Projeto pessoal utilizando a API de filme do TMDB
 * LiveData
 * ViewModel
 * Navigation
+* Paging 3
 * Injeção de Dependência (Koin)
 
 ### Próximas implementações
