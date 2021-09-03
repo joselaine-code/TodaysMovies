@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +16,8 @@ import br.com.joselaine.todaysmovies.presentation.base.BaseFragment
 import br.com.joselaine.todaysmovies.presentation.viewmodel.HomeViewModel
 import br.com.joselaine.todaysmovies.utils.Command
 import br.com.joselaine.todaysmovies.utils.Constants.KEY_BUNDLE_MOVIE_ID
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : BaseFragment() {
@@ -23,7 +25,7 @@ class HomeFragment : BaseFragment() {
     private var binding: FragmentHomeBinding? = null
     override var command: MutableLiveData<Command> = MutableLiveData()
     private val viewModel: HomeViewModel by viewModel()
-    private val popularAdapter : PopularAdapter by lazy {
+    private val popularAdapter: PopularAdapter by lazy {
         PopularAdapter { movie ->
             val bundle = Bundle()
             bundle.putInt(KEY_BUNDLE_MOVIE_ID, movie.id)
@@ -40,6 +42,7 @@ class HomeFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        setupObservables()
         return binding?.root
     }
 
@@ -47,7 +50,6 @@ class HomeFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.command = command
         setupSearch()
-        setupObservables()
         setupRecyclerView()
     }
 
@@ -58,31 +60,33 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setupObservables() {
-        viewModel.moviesPagedList?.observe(viewLifecycleOwner, { pagedList ->
-            popularAdapter.submitList(pagedList)
-            binding?.progressBar?.isVisible = false
-        })
 
-        viewModel.command.observe(viewLifecycleOwner, { command ->
-            when (command) {
-                is Command.Loading -> {
-                    binding?.apply {
-                        rvPopular.isVisible = false
-                        progressBar.isVisible = true
-                    }
-                }
-                is Command.Error -> {
-                    binding?.apply {
-                        progressBar.isVisible = false
-                        rvPopular.isVisible = false
-                        contentError.isVisible = true
-                        btnTryAgain.setOnClickListener {
-
-                        }
-                    }
-                }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getList().collect { pagingData ->
+                popularAdapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
             }
-        })
+        }
+
+//            viewModel.command.observe(viewLifecycleOwner, { command ->
+//                when (command) {
+//                    is Command.Loading -> {
+//                        binding?.apply {
+//                            rvPopular.isVisible = false
+//                            progressBar.isVisible = true
+//                        }
+//                    }
+//                    is Command.Error -> {
+//                        binding?.apply {
+//                            progressBar.isVisible = false
+//                            rvPopular.isVisible = false
+//                            contentError.isVisible = true
+//                            btnTryAgain.setOnClickListener {
+//
+//                            }
+//                        }
+//                    }
+//                }
+//            })
     }
 
     private fun setupRecyclerView() {
@@ -91,6 +95,8 @@ class HomeFragment : BaseFragment() {
                 context, LinearLayoutManager.HORIZONTAL, false
             )
             adapter = popularAdapter
+
         }
     }
+
 }

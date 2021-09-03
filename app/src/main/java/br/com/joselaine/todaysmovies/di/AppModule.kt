@@ -1,7 +1,6 @@
 package br.com.joselaine.todaysmovies.di
 
-import br.com.joselaine.todaysmovies.HomeDataSourceFactory
-import br.com.joselaine.todaysmovies.HomePageKeyedDataSource
+import br.com.joselaine.todaysmovies.MoviePagingSource
 import br.com.joselaine.todaysmovies.domain.repository.DetailsRepository
 import br.com.joselaine.todaysmovies.domain.repository.HomeRepository
 import br.com.joselaine.todaysmovies.domain.repository.SearchRepository
@@ -25,15 +24,14 @@ object AppModule {
         single { SearchUseCase(repository = get()) }
 
         single {
-            HomePageKeyedDataSource(
+            MoviePagingSource(
                 homeRepository = get(),
                 homeUseCase = get()
             )
         }
-        single { HomeDataSourceFactory(tmdbDataSource = get()) }
 
         viewModel { DetailsViewModel(detailsUseCase = get()) }
-        viewModel { HomeViewModel(homeUseCase = get(), homeDataSourceFactory = get()) }
+        viewModel { HomeViewModel(homeUseCase = get(), homeRepository = get()) }
         viewModel { SearchViewModel(searchUseCase = get()) }
     }
 }

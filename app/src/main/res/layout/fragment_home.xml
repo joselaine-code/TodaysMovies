@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
+        android:visibility="gone"
         android:indeterminateTintMode="src_atop"
         android:indeterminateTint="@color/darkBlue"
         app:layout_constraintBottom_toBottomOf="parent"
