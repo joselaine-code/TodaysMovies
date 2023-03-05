@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
 import br.com.joselaine.todaysmovies.R
 import br.com.joselaine.todaysmovies.databinding.FragmentDetailsBinding
 import br.com.joselaine.todaysmovies.presentation.base.BaseFragment
@@ -39,7 +40,7 @@ class DetailsFragment : BaseFragment() {
     }
 
     private fun setupObservables() {
-        viewModel.onSuccessMovieById.observe(viewLifecycleOwner, {
+        viewModel.onSuccessMovieById.observe(viewLifecycleOwner) {
             it?.let { movie ->
                 binding?.let { bindingNonNull ->
                     with(bindingNonNull) {
@@ -62,9 +63,9 @@ class DetailsFragment : BaseFragment() {
                     }
                 }
             }
-        })
+        }
 
-        viewModel.command.observe(viewLifecycleOwner, {
+        viewModel.command.observe(viewLifecycleOwner) {
             when (it) {
                 is Command.Loading -> {
                     binding?.apply {
@@ -82,9 +83,9 @@ class DetailsFragment : BaseFragment() {
                     }
                 }
             }
-        })
+        }
         binding?.ivBack?.setOnClickListener {
-            activity?.onBackPressed()
+            findNavController().popBackStack()
         }
     }
 

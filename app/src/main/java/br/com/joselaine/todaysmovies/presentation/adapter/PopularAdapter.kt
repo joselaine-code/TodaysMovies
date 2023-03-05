@@ -2,13 +2,11 @@ package br.com.joselaine.todaysmovies.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.joselaine.todaysmovies.R
 import br.com.joselaine.todaysmovies.data.model.Movie
 import br.com.joselaine.todaysmovies.databinding.ItemHomeBinding
-import br.com.joselaine.todaysmovies.utils.dateFormat
 import com.bumptech.glide.Glide
 
 class PopularAdapter(
